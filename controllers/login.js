@@ -32,7 +32,8 @@ module.exports={
     async signup_user(req,res){
         var user_obj=new user_signIn();
         user_obj=req.body;
+        console.log(user_obj)
 
-        
+
     }
 }
