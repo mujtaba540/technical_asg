@@ -18,6 +18,16 @@ const signIn=Joi.object().keys({
     Address:Joi.string().allow('').optional()
 
 })
+
+const emp_valid=Joi.object().keys({
+    UserID:Joi.number().required(),
+    Name:Joi.string().required(),
+    Email:Joi.string().required(),
+    Age:Joi.string().required(),
+    Designation:Joi.string().required(),
+    Gender:Joi.string().required(),
+    DateOfBirth:Joi.string().required(),
+})
 const rounds=10;
 var now=new Date();
 module.exports={
@@ -41,5 +51,10 @@ module.exports={
         user.UpdatedBy=""
         user.UpdatedOn=""
         return user
+    },
+
+    async valid_emp(emp){
+        return emp_valid.validate(emp)
+
     }
 }

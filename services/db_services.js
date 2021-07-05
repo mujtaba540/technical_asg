@@ -2,6 +2,10 @@ var mssql=require('mssql');
 const user_signUp = require('../models/User');
 const credentionals_validator = require('./credentionals_validator');
 var bcrypt=require('bcrypt')
+var date=require('date-and-time')
+
+var now=new Date();
+
 var config={
         user:'db_a7667a_mujtaba6099_admin',
         password:'5115814P@k',
@@ -73,12 +77,35 @@ module.exports={
 
     async emp_add(emp){
         try{
+            emp.IsActivated="true"
+            emp.IsDeleted="false"
+            emp.CreatedBy="Mujtaba"
+            emp.CreatedOn=date.format(now,"YYYY/MM/DD HH:mm:ss")
             var connection= await mssql.connect(config);
             var data=await connection.request()
-            .input("")
-
+            .input("uid",mssql.Int,emp.UserID)
+            .input("name",mssql.NVarChar,emp.Name)
+            .input("email",mssql.NVarChar,emp.Email)
+            .input("age",mssql.Int,emp.Age)
+            .input("desg",mssql.NVarChar,emp.Designation)
+            .input("gender",mssql.NVarChar,emp.Gender)
+            .input("dob",mssql.DateTime,emp.DateOfBirth)
+            .input("act",mssql.Bit,emp.IsActivated)
+            .input("dlt",mssql.Bit,emp.IsDeleted)
+            .input("crtBy",mssql.NVarChar,emp.CreatedBy)
+            .input("crtOn",mssql.DateTime,emp.CreatedOn)
+            .input("updBy",mssql.NVarChar,emp.UpdatedBy)
+            .input("updOn",mssql.DateTime,emp.UpdatedOn)
+            .query(`Insert into Employee (UserID,Name,Email,Age,Designation,Gender,DateOfBirth,IsActive,IsDeleted,CreatedBy,CreatedOn,UpdatedBy,UpdatedOn)
+            values (@uid,@name,@email,@age,@desg,@gender,@dob,@act,@dlt,@crtBy,@crtOn,@updBy,@updOn)`)
+            if(data.rowsAffected>0){
+                return true;
+            }else{
+                return false;
+            }
         }catch(err){
-
+            console.log("error on ADDING EMPLOYE")
+            return false;
         }
     }
 }
