@@ -16,7 +16,7 @@ module.exports={
                         console.log("Sign-In success")
                         res.json({
                             "token":token,
-                            "user_id":user_obj.UserID,
+                            "UserID":user_obj.UserID,
                             "msg":"Sign-In Success"
                         })
                     }else{
@@ -54,7 +54,7 @@ module.exports={
                                     console.log("Sign-up Successful")
                                     res.json({
                                         "token":token,
-                                        "user_id":user_obj.UserID,
+                                        "UserID":user_obj.UserID,
                                         "msg":"sign-up successful"
                                     })
                                 }else{
@@ -67,7 +67,6 @@ module.exports={
                         })
             }else{
                 console.log("Bad credentials")
-                console.log(valid.error)
                 res.json({
                     "msg":"Bad credentials"
                 })
