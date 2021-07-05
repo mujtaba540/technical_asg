@@ -46,13 +46,6 @@ module.exports={
         user_obj=req.body;
         crd_validator.valid_signup(user_obj).then(valid=>{
             if(valid.error===undefined){
-                dbService.check_email(user_obj).then(result=>{
-                    if(result){
-                        console.log("Username already present")
-                        res.json({
-                            "msg":"Username already present"
-                        })
-                    }else{
                         crd_validator.ecrypt_pwd(user_obj.Password).then(encr=>{
                             user_obj.Password=encr;
                             dbService.user_signUp(user_obj).then(stat=>{
@@ -72,9 +65,6 @@ module.exports={
                                 }  
                             })  
                         })
-                    }
-                })
-               
             }else{
                 console.log("Bad credentials")
                 console.log(valid.error)

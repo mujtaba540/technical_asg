@@ -71,21 +71,21 @@ module.exports={
         }
     },
 
-    async check_email(user){
-        try{
-            var connection= await mssql.connect(config);
-            var data=await connection.request()
-            .input('Username',mssql.NVarChar,user.Username)
-            .query("Select * from [User] where Username=@Username")
-            if(data.rowsAffected>0){
-                return true;
-            }else{
-                return false;
-            }
+    // async check_email(user){
+    //     try{
+    //         var connection= await mssql.connect(config);
+    //         var data=await connection.request()
+    //         .input('Username',mssql.NVarChar,user.Username)
+    //         .query("Select * from [User] where Username=@Username")
+    //         if(data.rowsAffected>0){
+    //             return true;
+    //         }else{
+    //             return false;
+    //         }
 
-        }catch(err){
-            console.log(err)
-            return false;
-        }
-    }
+    //     }catch(err){
+    //         console.log(err)
+    //         return false;
+    //     }
+    // }
 }
