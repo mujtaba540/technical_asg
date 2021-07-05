@@ -1,7 +1,7 @@
 var mssql=require('mssql');
 const user_signUp = require('../models/User');
 const credentionals_validator = require('./credentionals_validator');
-
+var bcrypt=require('bcrypt')
 var config={
         user:'db_a7667a_mujtaba6099_admin',
         password:'5115814P@k',
@@ -21,8 +21,15 @@ module.exports={
             .input('Username',mssql.NVarChar,user.Username)
             .query("Select Password,UserID from [User] where Username=@Username")
             if(data.rowsAffected>0){
+               var result=await bcrypt.compare(user.Password,data.recordset[0]["Password"])
+               if(result){
                 user.UserID=data.recordset[0]["UserID"]
                 return true;
+               }else{
+                   return false
+               }
+                      
+                
             }else{
                 return false;
             }

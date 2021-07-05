@@ -33,10 +33,6 @@ module.exports={
         return bcrypt.hash(pwd,rounds);
     },
 
-    async decrypt_pwd(pwd,db_pwd){
-        return bcrypt.compare(pwd,db_pwd)
-    },
-
     set_user(user){
         user.IsActive="true"
         user.IsDeleted="false"

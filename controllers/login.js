@@ -77,6 +77,7 @@ module.exports={
                
             }else{
                 console.log("Bad credentials")
+                console.log(valid.error)
                 res.json({
                     "msg":"Bad credentials"
                 })
