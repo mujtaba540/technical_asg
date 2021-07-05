@@ -1,5 +1,6 @@
 class user_signUp{
     constructor(){
+        this.UserID=""
         this.FirstName=""
         this.LastName=""
         this.Username=""

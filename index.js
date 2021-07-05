@@ -1,6 +1,7 @@
 var express=require('express');
 var router=require("./routes/routes")
 var bodyParser=require('body-parser')
+require('dotenv').config()
 
 var app=express();
 app.use(bodyParser.urlencoded({extended:true}))
