@@ -1,7 +1,5 @@
 var mssql=require('mssql');
-const user_signUp = require('../models/User');
-const credentionals_validator = require('./credentionals_validator');
-var bcrypt=require('bcrypt')
+var bcrypt=require('bcrypt');
 
 
 var config={
@@ -76,7 +74,7 @@ module.exports={
         }
     },
 
-    async emp_add(emp){
+    async employee_add(emp){
         try{
             var connection= await mssql.connect(config);
             var data=await connection.request()
@@ -126,5 +124,28 @@ module.exports={
             return false;
         }
         
+    },
+
+    async emp_updt(emp){
+
+    },
+
+    async all_emp(user_id){
+        try{
+            var connection= await mssql.connect(config);
+            var data=await connection.request()
+            .input("uid",mssql.Int,user_id)
+            .query(`Select * from Employee where UserID=@uid`)
+            if(data.rowsAffected>0){
+                return data.recordset;
+            }else{
+                return false;
+            }
+        }catch(err){
+            console.log("Error On fetching");
+            return false;
+        }
+
+
     }
 }

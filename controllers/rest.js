@@ -18,17 +18,18 @@ module.exports={
         }
     },
     async addEmp(req,res){
-        jwt.verify(req.token,process.env.SEC_USER_KEY,(err,add_emp)=>{
+        jwt.verify(req.token,process.env.SEC_USER_KEY,(err,key)=>{
             if(err){
                 res.json({
                     msg:"Not a valid user to proceed"
                 })
             }else{
                 var emp=req.body;
-                emp.UserID=add_emp.UserID;
+                emp.UserID=key.UserID;
                 crd_val.valid_emp(emp).then(emp_next=>{
                     if(emp_next.error===undefined){
-                        db_services.emp_add(emp).then(data=>{
+                        console.log("idr")
+                        db_services.employee_add(emp).then(data=>{
                             if(data){
                                 console.log("Employee Added")
                                 res.json({
@@ -36,12 +37,13 @@ module.exports={
                                     "msg":""
                                 })
                             }else{
-                                console.log("Employee not added")
+                                console.log("Error while adding employee")
                                 res.json({
-                                    "msg":"Employee not added"
+                                    "msg":"Error while adding employee"
                                 })
                             }
                         })
+                        
                     }else{
                         console.log("Bad credentials")
                         console.log(emp_next.error)
@@ -51,6 +53,7 @@ module.exports={
                     }
 
                 }).catch(err=>{
+                    console.log(err)
                     console.log("ADD error")
                         res.json({
                             "msg":"EMPLOYEE NOT ADDED"
@@ -95,8 +98,79 @@ module.exports={
     async updateEmp(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,data)=>{
             if(err){
+                console.log("Invalid User")
+                res.json({
+                    "msg":"Invalid User"
+                })
+            }else{
+                var emp=req.body;
+                emp.UserID=add_emp.UserID;
+                crd_val.valid_emp(emp).then(emp_next=>{
+                    if(emp_next.error===undefined){
+                        db_services.emp_updt(emp).then(data=>{
+                            if(data){
+                                console.log("Employee Updated")
+                                res.json({
+                                    "msg_sc":"Employee Updated",
+                                    "msg":""
+                                })
+                            }else{
+                                console.log("Employee not Updated")
+                                res.json({
+                                    "msg":"Employee not Updated"
+                                })
+                            }
+                        })
+                    }else{
+                        console.log("Bad credentials")
+                        console.log(emp_next.error)
+                        res.json({
+                            "msg":"Bad credentials"
+                        })
+                    }
+
+                }).catch(err=>{
+                    console.log("Updated error")
+                        res.json({
+                            "msg":"EMPLOYEE NOT Updated"
+                        })
+                })
+            }
+    })
+    },
+
+    async getAllEmp(req,res){
+        jwt.verify(req.token,process.env.SEC_USER_KEY,(err,key)=>{
+            if(err){
+                console.log("Not valid User to request Employee")
+                res.json({
+                    "msg":"Not valid User to request Employee"
+                })
+            }else{
+                var user_id=key.UserID;
+                db_services.all_emp(user_id).then(data=>{
+                    if(data){
+                        console.log("All employees for User")
+                        res.json({
+                            data,
+                            "msg_sc":"All employees for User",
+                            "msg":""
+
+                        })
+                    }else{
+                        console.log("NO employee for User")
+                        res.json({    
+                            "msg":"NO employee for User",
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err)
+                })
+                
 
             }
     })
     }
+
+
 }
