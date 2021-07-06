@@ -32,7 +32,8 @@ module.exports={
                             if(data){
                                 console.log("Employee Added")
                                 res.json({
-                                    "msg":"Employee Added"
+                                    "msg_sc":"Employee Added",
+                                    "msg":""
                                 })
                             }else{
                                 console.log("Employee not added")
@@ -57,5 +58,9 @@ module.exports={
                 })
             }
         })  
+    },
+
+    async deleteEmp(req,res){
+
     }
 }

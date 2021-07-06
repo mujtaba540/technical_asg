@@ -12,12 +12,13 @@ module.exports={
             if(valid.error===undefined){
                 dbService.user_signin(user_obj).then(data=>{
                     if(data){
-                        var token=jwt.sign(user_obj,process.env.SEC_USER_KEY);
+                        var token=jwt.sign(user_obj,process.env.SEC_USER_KEY,{expiresIn:'30m'});
                         console.log("Sign-In success")
                         res.json({
                             "token":token,
                             "UserID":user_obj.UserID,
-                            "msg":"Sign-In Success"
+                            "msg_sc":"Sign-In Success",
+                            "msg":""
                         })
                     }else{
                         console.log("No user Sign-In error")
@@ -50,12 +51,13 @@ module.exports={
                             user_obj.Password=encr;
                             dbService.user_signUp(user_obj).then(stat=>{
                                 if(stat){
-                                    var token=jwt.sign(user_obj.Username,process.env.SEC_USER_KEY)
+                                    var token=jwt.sign(user_obj.Username,process.env.SEC_USER_KEY,{expiresIn:'30m'})
                                     console.log("Sign-up Successful")
                                     res.json({
                                         "token":token,
                                         "UserID":user_obj.UserID,
-                                        "msg":"sign-up successful"
+                                        "msg_sc":"Sign-Up Success",
+                                        "msg":""
                                     })
                                 }else{
                                     console.log("sign-up ERROR")

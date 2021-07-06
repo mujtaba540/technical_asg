@@ -46,7 +46,6 @@ module.exports={
 
     async user_signUp(user){
         try{
-            user=credentionals_validator.set_user(user);
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("fname",mssql.NVarChar,user.FirstName)
@@ -60,8 +59,9 @@ module.exports={
             .input("crtBy",mssql.NVarChar,user.CreatedBy)
             .input("crtOn",mssql.DateTime,user.CreatedOn)
             .input("updBy",mssql.NVarChar,user.UpdatedBy)
-            .query(`Insert into [User] (FirstName,LastName,Username,Address,PhoneNumber,IsActive,IsDeleted,CreatedBy,CreatedOn,UpdatedBy,Password)
-            values (@fname,@lname,@username,@adrs,@phone,@act,@dlt,@crtBy,@crtOn,@updBy,@pwd); select SCOPE_IDENTITY();`)
+            .input("updOn",mssql.DateTime,user.UpdatedOn)
+            .query(`Insert into [User] (FirstName,LastName,Username,Address,PhoneNumber,IsActive,IsDeleted,CreatedBy,CreatedOn,UpdatedBy,UpdatedOn,Password)
+            values (@fname,@lname,@username,@adrs,@phone,@act,@dlt,@crtBy,@crtOn,@updBy,@updOn,@pwd); select SCOPE_IDENTITY();`)
             if(data.rowsAffected[0]>0){
                 user.UserID=data.recordset[0]['']
                 return true;
