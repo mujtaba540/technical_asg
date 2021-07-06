@@ -2,9 +2,7 @@ var mssql=require('mssql');
 const user_signUp = require('../models/User');
 const credentionals_validator = require('./credentionals_validator');
 var bcrypt=require('bcrypt')
-var date=require('date-and-time')
 
-var now=new Date();
 
 var config={
         user:'db_a7667a_mujtaba6099_admin',
@@ -46,6 +44,9 @@ module.exports={
 
     async user_signUp(user){
         try{
+            if(user.UpdatedOn===""){
+                user.UpdatedOn=null
+            }
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("fname",mssql.NVarChar,user.FirstName)
@@ -77,10 +78,6 @@ module.exports={
 
     async emp_add(emp){
         try{
-            emp.IsActivated="true"
-            emp.IsDeleted="false"
-            emp.CreatedBy="Mujtaba"
-            emp.CreatedOn=date.format(now,"YYYY/MM/DD HH:mm:ss")
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("uid",mssql.Int,emp.UserID)
@@ -90,22 +87,44 @@ module.exports={
             .input("desg",mssql.NVarChar,emp.Designation)
             .input("gender",mssql.NVarChar,emp.Gender)
             .input("dob",mssql.DateTime,emp.DateOfBirth)
-            .input("act",mssql.Bit,emp.IsActivated)
-            .input("dlt",mssql.Bit,emp.IsDeleted)
+            .input("active",mssql.Bit,emp.IsActive)
+            .input("delete",mssql.Bit,emp.IsDeleted)
             .input("crtBy",mssql.NVarChar,emp.CreatedBy)
             .input("crtOn",mssql.DateTime,emp.CreatedOn)
             .input("updBy",mssql.NVarChar,emp.UpdatedBy)
             .input("updOn",mssql.DateTime,emp.UpdatedOn)
             .query(`Insert into Employee (UserID,Name,Email,Age,Designation,Gender,DateOfBirth,IsActive,IsDeleted,CreatedBy,CreatedOn,UpdatedBy,UpdatedOn)
-            values (@uid,@name,@email,@age,@desg,@gender,@dob,@act,@dlt,@crtBy,@crtOn,@updBy,@updOn)`)
+            values (@uid,@name,@email,@age,@desg,@gender,@dob,@active,@delete,@crtBy,@crtOn,@updBy,@updOn)`)
             if(data.rowsAffected>0){
                 return true;
             }else{
                 return false;
             }
         }catch(err){
+            console.log(err)
             console.log("error on ADDING EMPLOYE")
             return false;
         }
+    },
+
+    async emp_dlt(emp_id,user_id){
+        try{
+            var connection= await mssql.connect(config);
+            var data=await connection.request()
+            .input("empid",mssql.Int,emp_id)
+            .input("userid",mssql.Int,user_id)
+            .query(`Update Employee 
+            set IsDeleted='true'
+            where EmpID=@empid and UserID=@userid`)
+            if(data.rowsAffected>0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(err){
+            console.log(err);
+            return false;
+        }
+        
     }
 }

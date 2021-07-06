@@ -8,5 +8,7 @@ router.post('/login/signin',controller.signin_user)
 router.post('/login/signup',controller.signup_user)
 
 
-router.post('/rest/add',rest.getToken,rest.add)
+router.post('/rest/add',rest.getToken,rest.addEmp)
+router.patch('/rest/delete',rest.getToken,rest.deleteEmp)
+router.put('/rest/update',rest.getToken,rest.updateEmp)
 module.exports=router

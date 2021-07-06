@@ -51,7 +51,7 @@ module.exports={
                             user_obj.Password=encr;
                             dbService.user_signUp(user_obj).then(stat=>{
                                 if(stat){
-                                    var token=jwt.sign(user_obj.Username,process.env.SEC_USER_KEY,{expiresIn:'30m'})
+                                    var token=jwt.sign(user_obj,process.env.SEC_USER_KEY,{expiresIn:'30m'})
                                     console.log("Sign-up Successful")
                                     res.json({
                                         "token":token,

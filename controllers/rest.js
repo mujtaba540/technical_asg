@@ -17,7 +17,7 @@ module.exports={
             })
         }
     },
-    async add(req,res){
+    async addEmp(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,add_emp)=>{
             if(err){
                 res.json({
@@ -59,8 +59,44 @@ module.exports={
             }
         })  
     },
-
     async deleteEmp(req,res){
+        jwt.verify(req.token,process.env.SEC_USER_KEY,(err,dltEmp)=>{
+            if(err){
+                console.log("Not a valid user to Delete EMPLOYEE")
+                res.json({
+                    "msg":"Not a valid user to Delete EMPLOYEE"
+                })
+            }else{
+                var emp_id=req.query.id;
+                var user_id=dltEmp.UserID;
+                db_services.emp_dlt(emp_id,user_id).then(data=>{
+                    if(data){
+                        console.log("Employee Deleted Successfully")
+                        res.json({
+                            msg:"",
+                            "msg_sc":"Employee Deleted Successfully"
+                        })
+                    }else{
+                        console.log("NO such employee or anyother Delete error")
+                        res.json({
+                            "msg":"NO such employee or anyother Delete error"
+                        })
+                    }
+                    
+                }).catch(err=>{
+                    console.log("Delete error")
+                    res.json({
+                        "msg":"Delete error"
+                    })
+                })   
+            }
+        })
+    },
+    async updateEmp(req,res){
+        jwt.verify(req.token,process.env.SEC_USER_KEY,(err,data)=>{
+            if(err){
 
+            }
+    })
     }
 }
