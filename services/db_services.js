@@ -76,6 +76,7 @@ module.exports={
 
     async employee_add(emp){
         try{
+            console.log(emp)
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("uid",mssql.Int,emp.UserID)
@@ -126,8 +127,37 @@ module.exports={
         
     },
 
-    async emp_updt(emp){
-
+    async emp_updt(emp,empid){
+        try{
+            var connection= await mssql.connect(config);
+            var data=await connection.request()
+            .input("eid",mssql.Int,empid)
+            .input("uid",mssql.Int,emp.UserID)
+            .input("name",mssql.NVarChar,emp.Name)
+            .input("email",mssql.NVarChar,emp.Email)
+            .input("age",mssql.Int,emp.Age)
+            .input("desg",mssql.NVarChar,emp.Designation)
+            .input("gender",mssql.NVarChar,emp.Gender)
+            .input("dob",mssql.DateTime,emp.DateOfBirth)
+            .input("active",mssql.Bit,emp.IsActive)
+            .input("delete",mssql.Bit,emp.IsDeleted)
+            .input("crtBy",mssql.NVarChar,emp.CreatedBy)
+            .input("crtOn",mssql.DateTime,emp.CreatedOn)
+            .input("updBy",mssql.NVarChar,emp.UpdatedBy)
+            .input("updOn",mssql.DateTime,emp.UpdatedOn)
+            .query(`Update Employee
+            set UserID=@uid,Name=@name,Email=@email,Age=@age,Designation=@desg,Gender=@gender,DateOfBirth=@dob,IsActive=@active,IsDeleted=@delete,CreatedBy=@crtBy,CreatedOn=@crtOn,UpdatedBy=@updBy,UpdatedOn=@updOn
+            where EmpID=@eid`)
+            if(data.rowsAffected>0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(err){
+            console.log(err)
+            console.log("error on Updating EMPLOYE")
+            return false;
+        }
     },
 
     async all_emp(user_id){
@@ -135,7 +165,7 @@ module.exports={
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("uid",mssql.Int,user_id)
-            .query(`Select * from Employee where UserID=@uid`)
+            .query(`Select * from Employee where UserID=@uid and IsActive='true' and IsDeleted='false'`)
             if(data.rowsAffected>0){
                 return data.recordset;
             }else{

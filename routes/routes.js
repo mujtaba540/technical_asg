@@ -13,4 +13,5 @@ router.patch('/rest/delete',rest.getToken,rest.deleteEmp)
 router.put('/rest/update',rest.getToken,rest.updateEmp)
 
 router.get('/rest/all',rest.getToken,rest.getAllEmp)
+router.get('/rest/empID',rest.getToken,rest.getEmpId)
 module.exports=router

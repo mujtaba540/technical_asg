@@ -3,6 +3,8 @@ var employee=require('../models/employee');
 const db_services = require('../services/db_services');
 var crd_val=require("../services/credentionals_validator")
 
+
+
 module.exports={
     getToken(req,res,next){
         var token_test=req.headers["authorization"];
@@ -28,7 +30,8 @@ module.exports={
                 emp.UserID=key.UserID;
                 crd_val.valid_emp(emp).then(emp_next=>{
                     if(emp_next.error===undefined){
-                        console.log("idr")
+                        console.log(emp.CreatedOn)
+                        console.log(emp.CreatedOn)
                         db_services.employee_add(emp).then(data=>{
                             if(data){
                                 console.log("Employee Added")
@@ -104,10 +107,12 @@ module.exports={
                 })
             }else{
                 var emp=req.body;
-                emp.UserID=add_emp.UserID;
+                emp.UserID=data.UserID;
+                var eid=req.query.id;
                 crd_val.valid_emp(emp).then(emp_next=>{
                     if(emp_next.error===undefined){
-                        db_services.emp_updt(emp).then(data=>{
+                       
+                        db_services.emp_updt(emp,eid).then(data=>{
                             if(data){
                                 console.log("Employee Updated")
                                 res.json({
@@ -115,9 +120,9 @@ module.exports={
                                     "msg":""
                                 })
                             }else{
-                                console.log("Employee not Updated")
+                                console.log("Employee not Updated or Employee with this id doesnot exsist")
                                 res.json({
-                                    "msg":"Employee not Updated"
+                                    "msg":"Employee not Updated or Employee with this id doesnot exsist"
                                 })
                             }
                         })
@@ -132,7 +137,7 @@ module.exports={
                 }).catch(err=>{
                     console.log("Updated error")
                         res.json({
-                            "msg":"EMPLOYEE NOT Updated"
+                            "msg":"Error: EMPLOYEE NOT Updated"
                         })
                 })
             }
@@ -170,6 +175,10 @@ module.exports={
 
             }
     })
+    },
+    
+    async getEmpId(req,res){
+
     }
 
 

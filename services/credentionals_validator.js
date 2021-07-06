@@ -39,6 +39,7 @@ const emp_valid=Joi.object().keys({
     UpdatedBy:Joi.string().allow('').optional(),
     UpdatedOn:Joi.date().allow('').optional()
 })
+
 const rounds=10;
 var now=new Date();
 module.exports={

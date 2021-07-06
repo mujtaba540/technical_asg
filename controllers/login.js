@@ -4,6 +4,8 @@ var crd_validator=require('../services/credentionals_validator');
 const user_signUp = require('../models/User');
 var jwt=require('jsonwebtoken')
 
+
+
 module.exports={
     async signin_user(req,res){
         var user_obj=new user_signIn();
@@ -49,6 +51,7 @@ module.exports={
             if(valid.error===undefined){
                         crd_validator.ecrypt_pwd(user_obj.Password).then(encr=>{
                             user_obj.Password=encr;
+                            
                             dbService.user_signUp(user_obj).then(stat=>{
                                 if(stat){
                                     var token=jwt.sign(user_obj,process.env.SEC_USER_KEY,{expiresIn:'30m'})
