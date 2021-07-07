@@ -177,5 +177,23 @@ module.exports={
         }
 
 
+    },
+
+    async getEmp_id(empid,userid){
+        try{
+            var connection= await mssql.connect(config);
+            var data=await connection.request()
+            .input("empid",mssql.Int,empid)
+            .input("uid",mssql.Int,userid)
+            .query(`Select * from Employee where UserID=@uid and EmpID=@empid`)
+            if(data.rowsAffected>0){
+                return data.recordset;
+            }else{
+                return false;
+            }
+        }catch(err){
+            console.log("Error On fetching");
+            return false;
+        }
     }
 }

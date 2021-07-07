@@ -178,7 +178,34 @@ module.exports={
     },
     
     async getEmpId(req,res){
+        jwt.verify(req.token,process.env.SEC_USER_KEY,(err,key)=>{
+            if(err){
+                console.log("Not a valid User to proceed")
+                res.json({
+                    "msg":"Not a valid user to proceed"
+                })
+            }else{
+                var emp_id=req.query.id;
+                var user_id=key.UserID;
+                db_services.getEmp_id(emp_id,user_id).then(data=>{
+                    if(data){
+                        console.log("Employee found")
+                        res.json({
+                            data,
+                            msg_sc:"Employee found",
+                            msg:""
+                        })
+                    }else{
+                        console.log("No Employee with such id exsist")
+                        res.json({
+                            msg:"No Employee with such id exsist"
+                        })
+                    }
+                }).catch(err=>{
 
+                })
+            }
+        })
     }
 
 
