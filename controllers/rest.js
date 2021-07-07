@@ -109,7 +109,7 @@ module.exports={
                 var emp=req.body;
                 emp.UserID=data.UserID;
                 var eid=req.query.id;
-                crd_val.valid_emp(emp).then(emp_next=>{
+                crd_val.update_emp(emp).then(emp_next=>{
                     if(emp_next.error===undefined){
                        
                         db_services.emp_updt(emp,eid).then(data=>{

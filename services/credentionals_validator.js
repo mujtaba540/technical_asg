@@ -40,6 +40,24 @@ const emp_valid=Joi.object().keys({
     UpdatedOn:Joi.date().allow('').optional()
 })
 
+const emp_update=Joi.object().keys({
+    UserID:Joi.number().required(),
+    Name:Joi.string().required(),
+    Email:Joi.string().trim().email().required(),
+    Age:Joi.number().required(),
+    Designation:Joi.string().required(),
+    Gender:Joi.string().required(),
+    DateOfBirth:Joi.date().required(),
+    IsActive:Joi.bool().required(),
+    IsDeleted:Joi.bool().required(),
+    CreatedBy:Joi.string().required(),
+    CreatedOn:Joi.date().required(),
+    UpdatedBy:Joi.string().allow('').required(),
+    UpdatedOn:Joi.date().allow('').required()
+})
+
+
+
 const rounds=10;
 var now=new Date();
 module.exports={
@@ -58,5 +76,9 @@ module.exports={
     async valid_emp(emp){
         return emp_valid.validate(emp)
 
+    },
+
+    async update_emp(emp){
+        return emp_update.validate(emp)
     }
 }
