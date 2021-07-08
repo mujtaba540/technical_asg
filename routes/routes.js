@@ -14,4 +14,6 @@ router.put('/rest/update',rest.getToken,rest.updateEmp)
 
 router.get('/rest/all',rest.getToken,rest.getAllEmp)
 router.get('/rest/empID',rest.getToken,rest.getEmpId)
+
+router.get('/rest/dashboard',rest.getToken,rest.userDashboard)
 module.exports=router

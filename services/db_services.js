@@ -1,5 +1,6 @@
 var mssql=require('mssql');
 var bcrypt=require('bcrypt');
+const { response } = require('express');
 
 
 var config={
@@ -76,7 +77,6 @@ module.exports={
 
     async employee_add(emp){
         try{
-            console.log(emp)
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("uid",mssql.Int,emp.UserID)
@@ -114,7 +114,7 @@ module.exports={
             .input("userid",mssql.Int,user_id)
             .query(`Update Employee 
             set IsDeleted='true'
-            where EmpID=@empid and UserID=@userid`)
+            where EmpID=@empid and UserID=@userid and IsDeleted='false'`)
             if(data.rowsAffected>0){
                 return true;
             }else{
@@ -147,7 +147,7 @@ module.exports={
             .input("updOn",mssql.DateTime,emp.UpdatedOn)
             .query(`Update Employee
             set UserID=@uid,Name=@name,Email=@email,Age=@age,Designation=@desg,Gender=@gender,DateOfBirth=@dob,IsActive=@active,IsDeleted=@delete,CreatedBy=@crtBy,CreatedOn=@crtOn,UpdatedBy=@updBy,UpdatedOn=@updOn
-            where EmpID=@eid`)
+            where EmpID=@eid and IsDeleted='false'`)
             if(data.rowsAffected>0){
                 return true;
             }else{
@@ -165,7 +165,7 @@ module.exports={
             var connection= await mssql.connect(config);
             var data=await connection.request()
             .input("uid",mssql.Int,user_id)
-            .query(`Select * from Employee where UserID=@uid and IsActive='true' and IsDeleted='false'`)
+            .query(`Select * from Employee where UserID=@uid and IsDeleted='false'`)
             if(data.rowsAffected>0){
                 return data.recordset;
             }else{
@@ -185,7 +185,7 @@ module.exports={
             var data=await connection.request()
             .input("empid",mssql.Int,empid)
             .input("uid",mssql.Int,userid)
-            .query(`Select * from Employee where UserID=@uid and EmpID=@empid`)
+            .query(`Select * from Employee where UserID=@uid and EmpID=@empid and IsDeleted='false'`)
             if(data.rowsAffected>0){
                 return data.recordset;
             }else{
@@ -193,6 +193,24 @@ module.exports={
             }
         }catch(err){
             console.log("Error On fetching");
+            return false;
+        }
+    },
+
+    async userData(uid){
+        try{
+            var connection= await mssql.connect(config);
+            var data=await connection.request()
+            .input("uid",mssql.Int,uid)
+            .query("Select * from [User] where UserID=@uid")
+            if(data.rowsAffected>0){
+                return data.recordset
+            }else{
+                return false;
+            }
+
+        }catch(err){
+            console.log("Error on User Data function")
             return false;
         }
     }
