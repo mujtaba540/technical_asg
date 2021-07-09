@@ -52,14 +52,14 @@ const emp_update=Joi.object().keys({
     IsDeleted:Joi.bool().required(),
     CreatedBy:Joi.string().required(),
     CreatedOn:Joi.date().required(),
-    UpdatedBy:Joi.string().allow('').required(),
-    UpdatedOn:Joi.date().allow('').required()
+    UpdatedBy:Joi.string().required(),
+    UpdatedOn:Joi.date().required()
 })
 
 
 
 const rounds=10;
-var now=new Date();
+
 module.exports={
    async valid_signin(user){
     return signIn.validate(user);

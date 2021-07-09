@@ -22,8 +22,9 @@ module.exports={
     async addEmp(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,key)=>{
             if(err){
-                res.status(401).json({
-                    msg:"Not a valid user to proceed"
+                console.log("Session time expired")
+                res.json({
+                    msg:"Session time expired"
                 })
             }else{
                 var emp=req.body;
@@ -40,7 +41,7 @@ module.exports={
                                 })
                             }else{
                                 console.log("Error while adding employee")
-                                res.status(502).json({
+                                res.json({
                                     "msg":"Error while adding employee"
                                 })
                             }
@@ -48,16 +49,14 @@ module.exports={
                         
                     }else{
                         console.log("Bad credentials")
-                        console.log(emp_next.error)
-                        res.status(403).json({
+                        res.json({
                             "msg":"Bad credentials"
                         })
                     }
 
                 }).catch(err=>{
-                    console.log(err)
                     console.log("ADD error")
-                        res.status(502).json({
+                        res.json({
                             "msg":"EMPLOYEE NOT ADDED"
                         })
                 })
@@ -67,9 +66,9 @@ module.exports={
     async deleteEmp(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,dltEmp)=>{
             if(err){
-                console.log("Not a valid user to Delete EMPLOYEE")
-                res.status(401).json({
-                    "msg":"Not a valid user to Delete EMPLOYEE"
+                console.log("Session time expired")
+                res.json({
+                    "msg":"Session time expired"
                 })
             }else{
                 var emp_id=req.query.id;
@@ -83,14 +82,14 @@ module.exports={
                         })
                     }else{
                         console.log("NO such employee or anyother Delete error")
-                        res.status(404).json({
+                        res.json({
                             "msg":"NO such employee or anyother Delete error"
                         })
                     }
                     
                 }).catch(err=>{
                     console.log("Delete error")
-                    res.status(502).json({
+                    res.json({
                         "msg":"Delete error"
                     })
                 })   
@@ -100,9 +99,9 @@ module.exports={
     async updateEmp(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,data)=>{
             if(err){
-                console.log("Invalid User")
-                res.status(401).json({
-                    "msg":"Invalid User"
+                console.log("Session time expired")
+                res.json({
+                    "msg":"Session time expired"
                 })
             }else{
                 var emp=req.body;
@@ -120,22 +119,21 @@ module.exports={
                                 })
                             }else{
                                 console.log("Employee not Updated or Employee with this id doesnot exsist")
-                                res.status(502).json({
+                                res.json({
                                     "msg":"Employee not Updated or Employee with this id doesnot exsist"
                                 })
                             }
                         })
                     }else{
                         console.log("Bad credentials")
-                        console.log(emp_next.error)
-                        res.status(403).json({
+                        res.json({
                             "msg":"Bad credentials"
                         })
                     }
 
                 }).catch(err=>{
                     console.log("Updated error")
-                        res.status(502).json({
+                        res.json({
                             "msg":"Error: EMPLOYEE NOT Updated"
                         })
                 })
@@ -146,9 +144,9 @@ module.exports={
     async getAllEmp(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,key)=>{
             if(err){
-                console.log("Not valid User to request Employee")
-                res.status(401).json({
-                    "msg":"Not valid User to request Employee"
+                console.log("Session time expired")
+                res.json({
+                    "msg":"Session time expired"
                 })
             }else{
                 var user_id=key.UserID;
@@ -163,13 +161,13 @@ module.exports={
                         })
                     }else{
                         console.log("NO employee for User")
-                        res.status(404).json({    
+                        res.json({    
                             "msg":"NO employee for User",
                         })
                     }
                 }).catch(err=>{
-                    console.log(err)
-                    res.status(404).json({
+                    console.log("Error on Fetching Employees")
+                    res.json({
                         "msg":"Error on Fetching Employees"
                     })
                 })
@@ -182,9 +180,9 @@ module.exports={
     async getEmpId(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,key)=>{
             if(err){
-                console.log("Not a valid User to proceed")
-                res.status(401).json({
-                    "msg":"Not a valid user to proceed"
+                console.log("Session time expired")
+                res.json({
+                    "msg":"Session time expired"
                 })
             }else{
                 var emp_id=req.query.id;
@@ -195,17 +193,17 @@ module.exports={
                         res.json({
                             data,
                             msg_sc:"Employee found",
-                            msg:""
+                            "msg":""
                         })
                     }else{
                         console.log("No Employee with such id exsist")
-                        res.status(404).json({
-                            msg:"No Employee with such id exsist"
+                        res.json({
+                            "msg":"No Employee with such id exsist"
                         })
                     }
                 }).catch(err=>{
-                    console.log(err);
-                    res.status(502).json({
+                    console.log("Employee by ID error on fetch");
+                    res.json({
                         "msg":"Employee by ID error on fetch"
                     })
                 })
@@ -216,9 +214,9 @@ module.exports={
     async userDashboard(req,res){
         jwt.verify(req.token,process.env.SEC_USER_KEY,(err,data)=>{
             if(err){
-                console.log("No valid user to Make Request")
-                res.status(401).json({
-                    msg:"No valid user to Make Request"
+                console.log("Session time expired")
+                res.json({
+                    msg:"Session time expired"
                 })
             }else{
                 var user_id=data.UserID;
@@ -231,7 +229,7 @@ module.exports={
                     })
                 }).catch(err=>{
                     console.log("Object Data NOT Send")
-                    res.status(404).json({
+                    res.json({
                         "msg":"Object Data NOT Send "
                     })
                 })

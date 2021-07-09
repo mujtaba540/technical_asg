@@ -24,19 +24,18 @@ module.exports={
                         })
                     }else{
                         console.log("No user Sign-In error")
-                            res.status(404).json({
+                            res.json({
                                 "msg":"No user Sign-In error"
                             })
                     }                  
                 })
             }else{
                 console.log("Bad credentials");
-                res.status(401).json({
+                res.json({
                     "msg":"Bad credentials"
                 })
             }
         }).catch(err=>{
-            console.log(err)
             console.log("Sign-In Error");
             res.json({
                 "msg":"Sign-In Error"
@@ -64,7 +63,7 @@ module.exports={
                                     })
                                 }else{
                                     console.log("sign-up ERROR")
-                                    res.status(404).json({
+                                    res.json({
                                         "msg":" sign-up error"
                                     })
                                 }  
@@ -72,13 +71,13 @@ module.exports={
                         })
             }else{
                 console.log("Bad credentials")
-                res.status(403).json({
+                res.json({
                     "msg":"Bad credentials"
                 })
             }
         }).catch(err=>{
             console.log("SignUp Error")
-            res.status(404).json({
+            res.json({
                 "msg":"SignUp Error"
             })
         })
