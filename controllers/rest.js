@@ -24,7 +24,7 @@ module.exports={
             if(err){
                 console.log("Session time expired")
                 res.json({
-                    msg:"Session time expired"
+                    "msg":"Session time expired"
                 })
             }else{
                 var emp=req.body;
