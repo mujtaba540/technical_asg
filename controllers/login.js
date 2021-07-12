@@ -5,12 +5,13 @@ const user_signUp = require('../models/User');
 var jwt=require('jsonwebtoken')
 
 
+var createdby="Mujtaba";
 
 module.exports={
     async signin_user(req,res){
         var user_obj=new user_signIn();
         user_obj=req.body;
-        crd_validator.valid_signin(user_obj).then(valid=>{
+        crd_validator.valid_signup(user_obj).then(valid=>{
             if(valid.error===undefined){
                 dbService.user_signin(user_obj).then(data=>{
                     if(data){
@@ -30,6 +31,7 @@ module.exports={
                     }                  
                 })
             }else{
+                console.log(valid.error)
                 console.log("Bad credentials");
                 res.json({
                     "msg":"Bad credentials"
@@ -49,8 +51,9 @@ module.exports={
         crd_validator.valid_signup(user_obj).then(valid=>{
             if(valid.error===undefined){
                         crd_validator.ecrypt_pwd(user_obj.Password).then(encr=>{
-                            user_obj.Password=encr;
-                            
+                            user_obj.Password=encr;  
+                            user_obj.CreatedBy=createdby;
+                            user_obj.CreatedOn=new Date()
                             dbService.user_signUp(user_obj).then(stat=>{
                                 if(stat){
                                     var token=jwt.sign(user_obj,process.env.SEC_USER_KEY,{expiresIn:'30m'})
@@ -70,6 +73,7 @@ module.exports={
                             })  
                         })
             }else{
+                console.log(valid.error)
                 console.log("Bad credentials")
                 res.json({
                     "msg":"Bad credentials"

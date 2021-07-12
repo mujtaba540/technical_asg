@@ -5,6 +5,7 @@ var crd_val=require("../services/credentionals_validator")
 
 
 
+var date=new Date()
 module.exports={
     getToken(req,res,next){
         var token_test=req.headers["authorization"];
@@ -31,7 +32,8 @@ module.exports={
                 emp.UserID=key.UserID;
                 crd_val.valid_emp(emp).then(emp_next=>{
                     if(emp_next.error===undefined){
-                        
+                        emp.CreatedOn=new Date();
+                        emp.CreatedBy=key.FirstName;
                         db_services.employee_add(emp).then(data=>{
                             if(data){
                                 console.log("Employee Added")
@@ -55,6 +57,7 @@ module.exports={
                     }
 
                 }).catch(err=>{
+                    console.log(err)
                     console.log("ADD error")
                         res.json({
                             "msg":"EMPLOYEE NOT ADDED"

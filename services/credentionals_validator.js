@@ -16,12 +16,7 @@ const signUp=Joi.object().keys({
     Password:Joi.string().required(),
     PhoneNumber:Joi.string().required(),
     Address:Joi.string().allow('').optional(),
-    IsActive:Joi.bool().required(),
-    IsDeleted:Joi.bool().required(),
-    CreatedBy:Joi.string().required(),
-    CreatedOn:Joi.date().required(),
-    UpdatedBy:Joi.string().allow('').optional(),
-    UpdatedOn:Joi.date().allow('').optional(),
+   
 })
 
 const emp_valid=Joi.object().keys({
@@ -32,29 +27,8 @@ const emp_valid=Joi.object().keys({
     Designation:Joi.string().required(),
     Gender:Joi.string().required(),
     DateOfBirth:Joi.date().required(),
-    IsActive:Joi.bool().required(),
-    IsDeleted:Joi.bool().required(),
-    CreatedBy:Joi.string().required(),
-    CreatedOn:Joi.date().required(),
-    UpdatedBy:Joi.string().allow('').optional(),
-    UpdatedOn:Joi.date().allow('').optional()
 })
 
-const emp_update=Joi.object().keys({
-    UserID:Joi.number().required(),
-    Name:Joi.string().required(),
-    Email:Joi.string().trim().email().required(),
-    Age:Joi.number().required().positive(),
-    Designation:Joi.string().required(),
-    Gender:Joi.string().required(),
-    DateOfBirth:Joi.date().required(),
-    IsActive:Joi.bool().required(),
-    IsDeleted:Joi.bool().required(),
-    CreatedBy:Joi.string().required(),
-    CreatedOn:Joi.date().required(),
-    UpdatedBy:Joi.string().required(),
-    UpdatedOn:Joi.date().required()
-})
 
 
 
@@ -79,6 +53,6 @@ module.exports={
     },
 
     async update_emp(emp){
-        return emp_update.validate(emp)
+        return emp_valid.validate(emp)
     }
 }
